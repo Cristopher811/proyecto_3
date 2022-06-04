@@ -45,17 +45,18 @@ function eatApple() {
         snake.tail[snake.tail.length - 1].y == apple.y){
             apple = new Apple();
             if (apple.color == "blue") {
-                snake.speed -= 100
-                snake.tempL -= 20
+                snake.speed += 10
+                snake.tempH -= 50
+                snake.thermodynamics();
             } else{
-                snake.speed += 100
-                snake.tempL += 50
+                snake.speed -= 10
+                snake.tempH += 50
+                snake.thermodynamics();
             }
             console.log(snake.speed)
             clearInterval(refreshMove)
             gameLoop(snake.speed)
         }
-    snake.thermodynamics();
 }
 
 function checkHitWall() {
@@ -140,6 +141,7 @@ class Snake {
         this.mass = 1
         this.tempH = 300
         this.tempL = 30
+        this.dx = 30
 
     }
 
@@ -151,7 +153,6 @@ class Snake {
 
     move() {
         let newRect
-        this.dx = this.dx/10
         this.dx = Math.round(this.dx)
         console.log(this.dx)
 
