@@ -40,38 +40,23 @@ function update() {
 
 
 function eatApple() {
+ //   apple = new Apple(); //quiero que se creen más manzanas pero se ponen todas locas xd
     if(snake.tail[snake.tail.length - 1].x == apple.x &&
         snake.tail[snake.tail.length - 1].y == apple.y){
-            snake.tail[snake.tail.length] = {x:apple.x, y: apple.y}
             apple = new Apple();
             if (apple.color == "blue") {
-                snake.speed -= 50
+                snake.speed -= 100
+                snake.tempL -= 20
             } else{
-                snake.speed += 50
+                snake.speed += 100
+                snake.tempL += 50
             }
             console.log(snake.speed)
             clearInterval(refreshMove)
             gameLoop(snake.speed)
         }
-
-
+    snake.thermodynamics();
 }
-/*
-function checkHitWall() {
-    let headTail = snake.tail[snake.tail.length -1]
-
-
-    if (headTail.x == - snake.size) {
-        headTail.x = canvas.width - snake.size
-    } else if (headTail.x == canvas.widh) {
-        headTail.x = 0
-    } else if (headTail.y == - snake.size) {
-        headTail.y = canvas.height - snake.size
-    } else if (headTail.y == canvas.height) {
-        headTail.y = 0 
-    }
-} */
-
 
 function checkHitWall() {
     let headTail = snake.tail[snake.tail.length -1]
@@ -97,7 +82,7 @@ function draw() {
     createRect(0,0, canvas.width, canvas.height)
 
 
-    for (let i = 0; i < snake.tail.length; i++){
+   for (let i = 0; i < snake.tail.length; i++){
         createRect(snake.tail[i].x + 2.5, snake.tail[i].y + 2.5,
             snake.size - 5, snake.size- 5, "white")
     }
@@ -151,38 +136,52 @@ class Snake {
         this.rotateX = 0
         this.rotateY = 1
         this.speed = 300
+        this.cp = 0.20
+        this.mass = 1
+        this.tempH = 300
+        this.tempL = 30
+
     }
 
+    thermodynamics(){
+        this.efficience = 1 - (this.tempL/this.tempH)
+        this.qH = this.mass*this.cp*(this.tempH - this.tempL)
+        this.dx = this.efficience*this.qH
+    }
 
     move() {
         let newRect
+        this.dx = this.dx/10
+        this.dx = Math.round(this.dx)
+        console.log(this.dx)
 
+        if(this.dx > 0){
+            if (this.rotateX == 1) {
+                newRect = {
+                    x: this.tail[this.tail.length - 1].x + this.size,
+                    y: this.tail[this.tail.length - 1].y
+                }
+            } else if (this.rotateX == -1) {
+                newRect = {
+                    x: this.tail[this.tail.length - 1].x - this.size,
+                    y: this.tail[this.tail.length - 1].y
+                }
+            } else if (this.rotateY == 1) {
+                newRect = {
+                    x: this.tail[this.tail.length - 1].x,
+                    y: this.tail[this.tail.length - 1].y + this.size
+                }
+            } else if (this.rotateY == -1) {
+                newRect = {
+                    x: this.tail[this.tail.length - 1].x,
+                    y: this.tail[this.tail.length - 1].y - this.size
+                }
+            }
 
-        if (this.rotateX == 1) {
-            newRect = {
-                x: this.tail[this.tail.length - 1].x + this.size,
-                y: this.tail[this.tail.length - 1].y
-            }
-        } else if (this.rotateX == -1) {
-            newRect = {
-                x: this.tail[this.tail.length - 1].x - this.size,
-                y: this.tail[this.tail.length - 1].y
-            }
-        } else if (this.rotateY == 1) {
-            newRect = {
-                x: this.tail[this.tail.length - 1].x,
-                y: this.tail[this.tail.length - 1].y + this.size
-            }
-        } else if (this.rotateY == -1) {
-            newRect = {
-                x: this.tail[this.tail.length - 1].x,
-                y: this.tail[this.tail.length - 1].y - this.size
-            }
+            this.tail.shift()
+            this.tail.push(newRect)
+            this.dx -= 1
         }
-
-
-        this.tail.shift()
-        this.tail.push(newRect)
     }
 }
 
@@ -214,7 +213,5 @@ class Apple{
         
     }
 }
-
-
 const snake = new Snake(20,20,20);
 let apple = new Apple();
