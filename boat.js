@@ -79,13 +79,13 @@ function checkHitWall() {
 
 
 function draw() {
-    createRect(0,0,canvas.width, canvas.height, "black")
+    createRect(0,0,canvas.width, canvas.height, "cyan")
     createRect(0,0, canvas.width, canvas.height)
 
 
    for (let i = 0; i < snake.tail.length; i++){
         createRect(snake.tail[i].x + 2.5, snake.tail[i].y + 2.5,
-            snake.size - 5, snake.size- 5, "white")
+            snake.size - 5, snake.size- 5, "green")
     }
 
 
@@ -139,9 +139,9 @@ class Snake {
         this.speed = 300
         this.cp = 0.20
         this.mass = 1
-        this.tempH = 300
-        this.tempL = 30
-        this.dx = 30
+        this.tempH = 1050
+        this.tempL = 300
+        this.dx = 108
 
     }
 
