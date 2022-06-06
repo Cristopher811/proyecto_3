@@ -1,5 +1,6 @@
 const canvas = document.getElementById("canvas")
 const canvasContext = canvas.getContext('2d')
+var applesQuantity = 0
 
 
 //window.onload = () => {
@@ -7,7 +8,6 @@ window.onload = function(){
     setInterval(changeColor, 5000)
     gameLoop()
 } 
-
 
 function gameLoop(speed) {
     refreshMove = setInterval(show, snake.speed)// here 15 is our fps value
@@ -54,6 +54,9 @@ function eatApple() {
                 snake.thermodynamics();
             }
             console.log(snake.speed)
+            applesQuantity += 1
+            console.log(apple.color, snake.speed)
+            apple = new Apple();
             clearInterval(refreshMove)
             gameLoop(snake.speed)
         }
@@ -74,7 +77,7 @@ function checkHitWall() {
     }
     document.getElementById("c1").value = "coordenadas:  " + headTail.x + ", " + headTail.y
 
-
+    document.getElementById("c2").value = "Energía:  " + snake.dx
 }
 
 
@@ -92,6 +95,7 @@ function draw() {
     canvasContext.font = "20px Arial"
     canvasContext.fillStyle = "#00FF42"
     canvasContext.fillText("Score: " + (snake.tail.length -1),canvas.width - 120, 18)
+    canvasContext.fillText("Score: " + applesQuantity ,canvas.width - 120, 18)
     createRect(apple.x, apple.y, apple.size, apple.size, apple.color)
 
 
@@ -155,6 +159,7 @@ class Snake {
         let newRect
         this.dx = Math.round(this.dx)
         console.log(this.dx)
+        //console.log(this.dx)
 
         if(this.dx > 0){
             if (this.rotateX == 1) {
