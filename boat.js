@@ -43,14 +43,13 @@ function eatApple() {
  //   apple = new Apple(); //quiero que se creen más manzanas pero se ponen todas locas xd
     if(snake.tail[snake.tail.length - 1].x == apple.x &&
         snake.tail[snake.tail.length - 1].y == apple.y){
-            apple = new Apple();
             if (apple.color == "blue") {
                 snake.speed += 10
-                snake.tempH -= 90
+                snake.tempH -= 100
                 snake.thermodynamics();
             } else{
                 snake.speed -= 10
-                snake.tempH += 90
+                snake.tempH += 50
                 snake.thermodynamics();
             }
             console.log(snake.speed)
