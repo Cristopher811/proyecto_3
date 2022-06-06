@@ -46,11 +46,11 @@ function eatApple() {
             apple = new Apple();
             if (apple.color == "blue") {
                 snake.speed += 10
-                snake.tempH -= 50
+                snake.tempH -= 90
                 snake.thermodynamics();
             } else{
                 snake.speed -= 10
-                snake.tempH += 50
+                snake.tempH += 90
                 snake.thermodynamics();
             }
             console.log(snake.speed)
@@ -144,7 +144,7 @@ class Snake {
         this.cp = 0.20
         this.mass = 1
         this.tempH = 1050
-        this.tempL = 300
+        this.tempL = 353
         this.dx = 108
 
     }
@@ -159,6 +159,7 @@ class Snake {
         let newRect
         this.dx = Math.round(this.dx)
         console.log(this.dx)
+        console.log(this.tempH)
         //console.log(this.dx)
 
         if(this.dx > 0){
@@ -183,7 +184,6 @@ class Snake {
                     y: this.tail[this.tail.length - 1].y - this.size
                 }
             }
-
             this.tail.shift()
             this.tail.push(newRect)
             this.dx -= 1
