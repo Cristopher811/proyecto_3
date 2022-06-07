@@ -1,9 +1,9 @@
 const canvas = document.getElementById("canvas")
 const canvasContext = canvas.getContext('2d')
 var applesQuantity = 0
+const t_h_color = "#9b2226"
+const t_l_color = "#386fa4"
 
-
-//window.onload = () => {
 window.onload = function(){
     setInterval(changeColor, 5000)
     gameLoop()
@@ -15,10 +15,10 @@ function gameLoop(speed) {
 
 
 function changeColor() {
-    if (apple.color == "blue") {
-        apple.color = "red"
+    if (apple.color == t_h_color) {
+        apple.color = t_l_color
     } else {
-        apple.color = "blue"
+        apple.color = t_h_color
     }
 }
 
@@ -34,16 +34,12 @@ function update() {
     snake.move()
     eatApple()
     checkHitWall()
-
-
 }
 
-
 function eatApple() {
- //   apple = new Apple(); //quiero que se creen más manzanas pero se ponen todas locas xd
     if(snake.tail[snake.tail.length - 1].x == apple.x &&
         snake.tail[snake.tail.length - 1].y == apple.y){
-            if (apple.color == "blue") {
+            if (apple.color == t_l_color) {
                 snake.speed += 10
                 snake.tempH -= 100
                 snake.thermodynamics();
@@ -65,39 +61,36 @@ function checkHitWall() {
     let headTail = snake.tail[snake.tail.length -1]
 
 
-    if (headTail.x == - snake.size) {
+    if (headTail.x ==  - snake.size) {
         headTail.x = canvas.width - snake.size
-    } else if (headTail.x >= canvas.width) {
+   } else if (headTail.x >= canvas.width) {
         headTail.x = 0
     } else if (headTail.y == - snake.size) {
         headTail.y = canvas.height - snake.size
     } else if (headTail.y >= canvas.height) {
         headTail.y = 0 
     }
-    document.getElementById("c1").value = "coordenadas:  " + headTail.x + ", " + headTail.y
-
-    document.getElementById("c2").value = "Energía:  " + snake.dx
+    document.getElementById("c1").value = "distancia recorrida:  " + snake.distance
+    document.getElementById("c2").value = "Distancia por recorrer:  " + snake.dx
+    document.getElementById("c3").value = "Eficiencia:  " + (1-(snake.tempL/snake.tempH))
+    document.getElementById("c4").value = "Q_H:  " + snake.tempH
 }
 
-
 function draw() {
-    createRect(0,0,canvas.width, canvas.height, "cyan")
+    createRect(0,0,canvas.width, canvas.height, "#84d2f6") //color de fondo
     createRect(0,0, canvas.width, canvas.height)
 
 
    for (let i = 0; i < snake.tail.length; i++){
         createRect(snake.tail[i].x + 2.5, snake.tail[i].y + 2.5,
-            snake.size - 5, snake.size- 5, "green")
+            snake.size - 5, snake.size- 5, "#5e503f")
     }
 
 
     canvasContext.font = "20px Arial"
-    canvasContext.fillStyle = "#00FF42"
-    canvasContext.fillText("Score: " + (snake.tail.length -1),canvas.width - 120, 18)
+    canvasContext.fillStyle = "#000000"
     canvasContext.fillText("Score: " + applesQuantity ,canvas.width - 120, 18)
     createRect(apple.x, apple.y, apple.size, apple.size, apple.color)
-
-
 }
 
 
@@ -145,7 +138,7 @@ class Snake {
         this.tempH = 1050
         this.tempL = 353
         this.dx = 108
-
+        this.distance = 0
     }
 
     thermodynamics(){
@@ -159,7 +152,6 @@ class Snake {
         this.dx = Math.round(this.dx)
         console.log(this.dx)
         console.log(this.tempH)
-        //console.log(this.dx)
 
         if(this.dx > 0){
             if (this.rotateX == 1) {
@@ -186,6 +178,7 @@ class Snake {
             this.tail.shift()
             this.tail.push(newRect)
             this.dx -= 1
+            this.distance +=1
         }
     }
 }
@@ -206,10 +199,8 @@ class Apple{
                 }
             }
 
-
             this.size = snake.size
-            this.color = aleatory (["red", "blue"])
-
+            this.color = aleatory ([t_h_color, t_l_color])
 
             if (!isTouching) {
                 break;
