@@ -1,0 +1,70 @@
+\documentclass{article}
+\usepackage[letterpaper, top=2cm,bottom=2cm, left=3cm, right=3cm, marginparwidth = 1.75cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{bigints}
+\usepackage{amssymb}
+\usepackage[mathscr]{euscript}
+\usepackage{mathabx}
+\usepackage{graphicx}
+\usepackage{cancel}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat = newest}
+\usepackage{siunitx}
+\usepackage{tkz-euclide}
+\usepackage{pstricks}
+\providecommand{\abs}[1]{\lvert#1\rvert}
+\usetikzlibrary{3d}
+\makeatletter
+\tikzoption{canvas is plane}[]{\@setOxy#1}
+\def\@setOxy O(#1,#2,#3)x(#4,#5,#6)y(#7,#8,#9)%
+  {\def\tikz@plane@origin{\pgfpointxyz{#1}{#2}{#3}}%
+   \def\tikz@plane@x{\pgfpointxyz{#4}{#5}{#6}}%
+   \def\tikz@plane@y{\pgfpointxyz{#7}{#8}{#9}}%
+   \tikz@canvas@is@plane
+  }
+\makeatother
+
+\title{Justificación Proyecto 3}
+\author{Equipo N}
+
+\begin{document}
+  \maketitle
+  Esta simulación interactiva tiene como objetivo modelar una máquina de Carnot que funciona entre dos reservorios de temperatura $T_H$ y $T_L$, 
+  la eficiencia está dada por
+  \begin{center}
+    $\eta = 1 - \cfrac{T_L}{T_H}$
+  \end{center}
+  Con $T_H = 1050$ K y $T_L = 300$ K.\\
+  El barco se mueve en aguas marinas y genera trabajo a partir del gradiente de temperatura entre un reservorio de agua a una temperatura $T_H$ 
+  en el barco y $T_L$ con agua del mar.\\
+  Partimos de la definición de eficiencia
+  \begin{center}
+    $1 - \cfrac{T_L}{T_H} = \cfrac{W}{Q_H}$
+  \end{center}
+  Despejando para $W$
+  \begin{center}
+    $W = Q_H\left(1 - \cfrac{T_L}{T_H}\right) = mC\Delta T\left(1 - \cfrac{T_L}{T_H}\right)$
+  \end{center}
+  Como el trabajo se aplica horizontalmente sobre el barco, podemos escribir (de alguna manera, una turbina logra crear una fuerza igual en magnitud
+  pero en sentido contrario sobre el agua, que mueve al barco)
+  \begin{center}
+    $F\Delta x = mC\Delta T\left(1 - \cfrac{T_L}{T_H}\right)$
+  \end{center}
+  Consideramos la situación ideal de un barco que se desplaza al aplicarle una fuerza de 1 N, y con masa de 1 kg, por lo tanto, obtenemos
+  \begin{center}
+    $\Delta x = \cfrac{mc\Delta T\left(1 - \cfrac{T_L}{T_H}\right)}{F}$
+  \end{center}
+  Dentro de la dinámica del juego incluimos objetos (carbón) a una temperatura alta (rojos) o baja (azules). En el momento en que el barco hace 
+  contacto con un objeto rojo, $T_H$ aumenta 50 K y por lo tanto $\Delta x$ también aumenta, ya que
+  \begin{center}
+    $1 - \cfrac{T_L}{T_H} < 1 - \cfrac{T_L}{T_H + 50}$
+  \end{center}
+  Cuando entra en contacto con un objeto azul, $T_H$ disminuye 50 K y $\Delta x$ disminuye, de manera similar. $T_L$ se mantiene constante.
+
+  \section*{Otras consideraciones importantes.}
+  El objetivo del juego es desplazarte la mayor cantidad de $\Delta x$ como te sea posible, para esto $\Delta x$ disminuye en razón de un frame, 
+  como se muestra en pantalla.\\
+  El programa es base javascript-html5 y requiere abrir el archivo .html en el navegador para visualizar el proyecto.
+\end{document}
